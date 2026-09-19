@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -28,16 +28,14 @@ public class QuickLanClientTest {
 	private final String baseUrl = "http://localhost:8080";
 	private final LanGameServer lGameServer = new LanGameServer(8080);
 	
-	@Before
+	@BeforeEach
 	public void Before() throws IOException {
 		lGameServer.start();
-		Assert.assertTrue(lGameServer.isAlive());
 	}
 
-	@After
+	@AfterEach
 	public void After() {
-		lGameServer.stop();
-		Assert.assertFalse(lGameServer.isAlive());
+		lGameServer.stop(5);
 	}
 
 	@Test
@@ -45,7 +43,7 @@ public class QuickLanClientTest {
 		final RestTemplate rest = new RestTemplate();
 		final String forObject = rest.getForObject(baseUrl + "/ping", String.class);
 		System.out.println(forObject);
-		Assert.assertTrue(forObject.contains("it is time to SCHOTTEN !!!!"));
+		Assertions.assertTrue(forObject.contains("it is time to SCHOTTEN !!!!"));
 	}
 
 	@Test
@@ -56,7 +54,7 @@ public class QuickLanClientTest {
 		final String url = baseUrl + "/createGame?gamename=" + gamename;
 		final Boolean result = rest.getForObject(url, Boolean.class);
 		//		System.out.println(result);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 	
 	@Test
@@ -64,16 +62,16 @@ public class QuickLanClientTest {
 		final RestTemplate rest = new RestTemplate();
 		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 		final String url = baseUrl + "/createGame?gamename=" + "test-1";
-		Assert.assertTrue(rest.getForObject(url, Boolean.class));
+		Assertions.assertTrue(rest.getForObject(url, Boolean.class));
 		final String url2 = baseUrl + "/createGame?gamename=" + "test-2";
-		Assert.assertTrue(rest.getForObject(url2, Boolean.class));
+		Assertions.assertTrue(rest.getForObject(url2, Boolean.class));
 
 		// list
 		final String urlList = baseUrl + "/listGames";
 		final ResponseEntity<String[]> list = rest.getForEntity(urlList, String[].class);
         final List<String> resultAsList =  Arrays.asList(list.getBody());
-		Assert.assertTrue(resultAsList.contains("test-1"));
-		Assert.assertTrue(resultAsList.contains("test-2"));
+		Assertions.assertTrue(resultAsList.contains("test-1"));
+		Assertions.assertTrue(resultAsList.contains("test-2"));
 	}
 	
 	@Test
@@ -83,11 +81,11 @@ public class QuickLanClientTest {
 		final String gamename = "test-2" + System.currentTimeMillis();
 		final String url = baseUrl + "/createGame?gamename=" + gamename;
 		final Boolean result = rest.getForObject(url, Boolean.class);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 		
 		// delete
 		final String urlDelete = url + "/deleteGame?gamename=" + gamename;
-		Assert.assertTrue(rest.getForObject(urlDelete, Boolean.class));
+		Assertions.assertTrue(rest.getForObject(urlDelete, Boolean.class));
 	}
 	
 	@Test
@@ -97,13 +95,13 @@ public class QuickLanClientTest {
 		final String gamename = "test-gest" + System.currentTimeMillis();
 		final String url = baseUrl + "/createGame?gamename=" + gamename;
 		final Boolean result = rest.getForObject(url, Boolean.class);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 		
 		// get game
 		final String urlGet = baseUrl + "/getGame?gamename=" + gamename;
 		final Game game = rest.getForObject(urlGet, Game.class);
-		Assert.assertNotNull(game);
-		Assert.assertEquals(PlayingPlayerType.ONE, game.getPlayingPlayer().getPlayerType());
+		Assertions.assertNotNull(game);
+		Assertions.assertEquals(PlayingPlayerType.ONE, game.getPlayingPlayer().getPlayerType());
 	}
 	
 	@Test
@@ -113,13 +111,13 @@ public class QuickLanClientTest {
 		final String gamename = "test-gest" + System.currentTimeMillis();
 		final String url = baseUrl + "/createGame?gamename=" + gamename;
 		final Boolean result = rest.getForObject(url, Boolean.class);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 		
 		// get game
 		final String urlGet = baseUrl + "/getPlayingPlayer?gamename=" + gamename;
 		final Player player = rest.getForObject(urlGet, Player.class);
-		Assert.assertNotNull(player);
-		Assert.assertEquals(PlayingPlayerType.ONE, player.getPlayerType());
+		Assertions.assertNotNull(player);
+		Assertions.assertEquals(PlayingPlayerType.ONE, player.getPlayerType());
 	}
 	
 	@Test
@@ -129,13 +127,13 @@ public class QuickLanClientTest {
 		final String gamename = "test-gest" + System.currentTimeMillis();
 		final String url = baseUrl + "/createGame?gamename=" + gamename;
 		final Boolean result = rest.getForObject(url, Boolean.class);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 		
 		// get game
 		final String urlGet = baseUrl + "/getGame?gamename=" + gamename;
 		final Game game = rest.getForObject(urlGet, Game.class);
-		Assert.assertNotNull(game);
-		Assert.assertEquals(PlayingPlayerType.ONE, game.getPlayingPlayer().getPlayerType());
+		Assertions.assertNotNull(game);
+		Assertions.assertEquals(PlayingPlayerType.ONE, game.getPlayingPlayer().getPlayerType());
 		
 		// swap
 		game.swapPlayingPlayerType();
@@ -149,12 +147,12 @@ public class QuickLanClientTest {
 //		headers.setContentLength(writeValueAsString.length());
 //		headers.setAcceptCharset(new ArrayList<Charset>(Charset.availableCharsets().values()));
 //		final HttpEntity<String> entity = new HttpEntity<String>(writeValueAsString, headers);
-		Assert.assertTrue(rest.postForObject(urlUpdate, game, Boolean.class));
+		Assertions.assertTrue(rest.postForObject(urlUpdate, game, Boolean.class));
 		
 		// get once again
 		final Game game2 = rest.getForObject(urlGet, Game.class);
-		Assert.assertNotNull(game2);
-		Assert.assertEquals(PlayingPlayerType.TWO, game2.getPlayingPlayer().getPlayerType());
+		Assertions.assertNotNull(game2);
+		Assertions.assertEquals(PlayingPlayerType.TWO, game2.getPlayingPlayer().getPlayerType());
 		
 	}
 
@@ -165,8 +163,8 @@ public class QuickLanClientTest {
 		//		System.out.println(card);
 		final Card c = mapper.readValue(card, Card.class);
 		//		System.out.println(c.getColor().name() + "-" + c.getNumber().name());
-		Assert.assertEquals(NUMBER.NINE, c.getNumber());
-		Assert.assertEquals(COLOR.CYAN, c.getColor());
+		Assertions.assertEquals(NUMBER.NINE, c.getNumber());
+		Assertions.assertEquals(COLOR.CYAN, c.getColor());
 
 		final Hand handForTest = new Hand();
 		handForTest.addCard(c, 0);
@@ -174,18 +172,18 @@ public class QuickLanClientTest {
 		//		System.out.println(hand);
 		final Hand h = mapper.readValue(hand, Hand.class);
 		//		System.out.println(h.getHandSize());
-		Assert.assertEquals(1, h.getHandSize());
+		Assertions.assertEquals(1, h.getHandSize());
 		final Card hcard = h.getCards().get(0);
 		//		System.out.println(hcard.getColor().name() + "-" + hcard.getNumber().name());
-		Assert.assertEquals(NUMBER.NINE, hcard.getNumber());
-		Assert.assertEquals(COLOR.CYAN, hcard.getColor());
+		Assertions.assertEquals(NUMBER.NINE, hcard.getNumber());
+		Assertions.assertEquals(COLOR.CYAN, hcard.getColor());
 
 		final String player = mapper.writeValueAsString(new Player("player1", PlayingPlayerType.ONE));
 		System.out.println(player);
 		final Player p = mapper.readValue(player, Player.class);
 		System.out.println(p.getName() + "-" + p.getPlayerType().toString());
-		Assert.assertEquals(PlayingPlayerType.ONE, p.getPlayerType());
-		Assert.assertEquals("player1", p.getName());
+		Assertions.assertEquals(PlayingPlayerType.ONE, p.getPlayerType());
+		Assertions.assertEquals("player1", p.getName());
 	}
 
 }

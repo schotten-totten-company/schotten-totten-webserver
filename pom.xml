@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>schotten-totten-webserver</groupId>
 	<artifactId>schotten-totten-webserver</artifactId>
-	<version>1.1</version>
+	<version>2.0</version>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>21</java.version>
 	</properties>
 
 	<repositories>
@@ -19,49 +19,43 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>2.7.3</version>
+			<version>3.5.16</version>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.2</version>
+			<groupId>org.apache.httpcomponents.client5</groupId>
+			<artifactId>httpclient5</artifactId>
+			<version>5.4.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.14.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.13.3</version>
+			<version>2.22.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.schotten-totten-company</groupId>
 			<artifactId>schotten-totten-core</artifactId>
-			<version>1.9.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.13</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.nanohttpd/nanohttpd-nanolets -->
-		<dependency>
-			<groupId>org.nanohttpd</groupId>
-			<artifactId>nanohttpd-nanolets</artifactId>
-			<version>2.3.1</version>
+			<version>2.0.0</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.11.0</version>
+			<version>2.22.0</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
 		<dependency>
 		    <groupId>org.apache.logging.log4j</groupId>
 		    <artifactId>log4j-api</artifactId>
-		    <version>2.18.0</version>
+		    <version>2.26.1</version>
 		</dependency>
 
 	</dependencies>
@@ -70,16 +64,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
+				<version>3.16.0</version>
 				<configuration>
-					<source>11</source>
-					<target>11</target>
+					<source>21</source>
+					<target>21</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.7.3</version>
+				<version>3.5.16</version>
 				<configuration>
 					<fork>true</fork>
 					<mainClass>server.RestGameServer</mainClass>
