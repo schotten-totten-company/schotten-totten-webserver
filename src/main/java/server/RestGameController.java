@@ -16,10 +16,6 @@ import com.boradgames.bastien.schotten_totten.core.exceptions.GameCreationExcept
 import com.boradgames.bastien.schotten_totten.core.model.Game;
 import com.boradgames.bastien.schotten_totten.core.model.Player;
 
-/**
- * Created by Bastien on 21/11/2017.
- */
-
 @RestController
 public class RestGameController {
 
@@ -40,7 +36,7 @@ public class RestGameController {
 				final Game game = new Game("Player 1", "Player 2");
 				gameMap.put(gamename, game);
 				return true;
-			} catch (GameCreationException e) {
+			} catch (final GameCreationException e) {
 				return false;
 			}
 		}
