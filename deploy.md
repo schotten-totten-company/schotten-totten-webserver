@@ -11,7 +11,7 @@ sudo ufw reload
 
 ## Edit crontab
 ```
-sudo crontab -e
+crontab -e
 ```
 
 ## with the following 2 lines (don't forget to update server X.X version) :
